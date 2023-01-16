@@ -1,6 +1,7 @@
 package guru.springframework.sfgpetclinic.bootstrap;
 
 import guru.springframework.sfgpetclinic.model.Owner;
+import guru.springframework.sfgpetclinic.model.Pet;
 import guru.springframework.sfgpetclinic.model.PetType;
 import guru.springframework.sfgpetclinic.model.Vet;
 import guru.springframework.sfgpetclinic.services.OwnerService;
@@ -8,6 +9,8 @@ import guru.springframework.sfgpetclinic.services.PetTypeService;
 import guru.springframework.sfgpetclinic.services.VetService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
 
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -25,9 +28,10 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+
         PetType dog = new PetType();
         dog.setName("Dog");
-        PetType savedPetType = petService.save(dog);
+        PetType savedDogPetType = petService.save(dog);
 
         PetType cat = new PetType();
         cat.setName("Cat");
@@ -36,12 +40,33 @@ public class DataLoader implements CommandLineRunner {
         Owner owner = new Owner();
         owner.setFirstName("Kushan");
         owner.setLastName("Jayathilake");
+        owner.setAddress("Glen Meadow Road");
+        owner.setCity("Franklin");
+        owner.setTelephone("1231231231");
+
+        Pet kushansPet = new Pet();
+        kushansPet.setPetType(savedDogPetType);
+        kushansPet.setOwner(owner);
+        kushansPet.setDateOfBirth(LocalDate.now());
+        kushansPet.setName("Banu");
+        owner.getPets().add(kushansPet);
 
         ownerService.save(owner);
 
         Owner owner1 = new Owner();
         owner1.setFirstName("Rangika");
         owner1.setLastName("Abeysinghe");
+        owner1.setAddress("Glen Meadow Road");
+        owner1.setCity("Franklin");
+        owner1.setTelephone("89898989");
+
+        Pet rangikasPet = new Pet();
+        rangikasPet.setName("Meow");
+        rangikasPet.setPetType(savedCatPetType);
+        rangikasPet.setOwner(owner1);
+        rangikasPet.setDateOfBirth(LocalDate.now());
+        owner1.getPets().add(rangikasPet);
+
 
         ownerService.save(owner1);
         System.out.println("Owners loaded!!!");
